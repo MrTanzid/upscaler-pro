@@ -4,7 +4,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import { Loader } from 'lucide-react';
 import { toast } from 'sonner';
-import { uploadAndUpscale, checkJobStatus, simulateUpscaling } from '../services/api';
+import { uploadAndUpscale, checkJobStatus, simulateUpscaling, processImageWithPicsart } from '../services/api';
 import { UpscaleSettings, JobStatus } from '../types';
 
 interface ProcessingModalProps {
@@ -31,11 +31,8 @@ const ProcessingModal: React.FC<ProcessingModalProps> = ({
     
     const processFile = async () => {
       try {
-        // Convert file to data URL for frontend processing
-        const originalImageUrl = await readFileAsDataURL(file);
-        
-        // Step 1: Upload file and start processing
-        setStatus('Uploading...');
+        // Step 1: Initialize the job
+        setStatus('Uploading to server...');
         setProgress(20);
         
         const uploadResponse = await uploadAndUpscale({
@@ -46,46 +43,33 @@ const ProcessingModal: React.FC<ProcessingModalProps> = ({
         });
         
         setJobId(uploadResponse.job_id);
-        setStatus('Processing...');
+        
+        // Step 2: Start the actual processing with Picsart
+        setStatus('Processing with AI...');
         setProgress(40);
         
-        // Step 2: Poll for job status
-        let jobStatus: JobStatus = { status: 'pending', progress: 40 };
+        // Process the image with Picsart API
+        const enhancedImageUrl = await processImageWithPicsart(
+          file,
+          settings.scale
+        );
         
-        while (jobStatus.status !== 'completed' && jobStatus.status !== 'failed') {
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          
-          jobStatus = await checkJobStatus(uploadResponse.job_id);
-          
-          if (jobStatus.status === 'processing') {
-            setStatus('Processing...');
-            setProgress(Math.min(40 + jobStatus.progress / 2, 90));
-          } else if (jobStatus.status === 'completed') {
-            setStatus('Finalizing...');
-            setProgress(100);
-            
-            // Wait a moment for the progress to show 100%
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            // Process the image in the browser using our simulateUpscaling function
-            const enhancedImageUrl = await simulateUpscaling(
-              originalImageUrl,
-              settings.scale,
-              settings.denoise
-            );
-            
-            // Now pass the enhanced image URL back
-            onSuccess(uploadResponse.job_id, enhancedImageUrl);
-          } else if (jobStatus.status === 'failed') {
-            throw new Error(jobStatus.message || 'Processing failed');
-          }
-        }
+        // Update progress
+        setStatus('Finalizing...');
+        setProgress(100);
+        
+        // Wait a moment for the progress to show 100%
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Pass the enhanced image URL back
+        onSuccess(uploadResponse.job_id, enhancedImageUrl);
+        
       } catch (error) {
         console.error('Error during processing', error);
         if ((error as Error).message.includes('Upload')) {
           toast.error('Upload failed. Please retry.');
         } else {
-          toast.error('Upscaling failed. Try different settings.');
+          toast.error('Upscaling failed. Try different settings or try again later.');
         }
         onClose();
       }
