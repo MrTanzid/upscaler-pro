@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import { Loader } from 'lucide-react';
 import { toast } from 'sonner';
@@ -90,15 +90,16 @@ const ProcessingModal: React.FC<ProcessingModalProps> = ({
   
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md" aria-live="polite" aria-busy="true">
-        <div className="py-6">
+      <DialogContent className="sm:max-w-md" aria-describedby="processing-description">
+        <DialogTitle className="sr-only">Processing Image</DialogTitle>
+        <div className="py-6" id="processing-description">
           <div className="flex flex-col items-center justify-center">
             <div className="mb-4">
               <Loader className="h-10 w-10 text-primary animate-spin" />
             </div>
             <h3 className="text-xl font-semibold mb-4">{status}</h3>
             <div className="w-full max-w-xs mb-2">
-              <Progress value={progress} className="h-2" />
+              <Progress value={progress} className="h-2" aria-label="Processing progress" />
             </div>
             <p className="text-sm text-gray-500">{Math.round(progress)}%</p>
           </div>

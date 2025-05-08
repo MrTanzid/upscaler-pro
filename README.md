@@ -1,73 +1,124 @@
-# Welcome to your Lovable project
 
-## Project info
+# AI Image Upscaler
 
-**URL**: https://lovable.dev/projects/6c3a409d-cd19-4c63-9129-280cf9c36a6d
+![AI Image Upscaler](https://placeholder-for-image-url.com/hero-image.png)
 
-## How can I edit this code?
+An advanced, open-source image upscaling web application powered by AI. Transform low-resolution images into crystal-clear, stunning visuals using state-of-the-art upscaling technology.
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use Lovable**
+- **AI-Powered Enhancement**: Utilizes advanced algorithms to recreate details in higher resolution
+- **Multiple Upscaling Options**: Scale images 2x, 4x, or 8x their original size
+- **Noise Reduction**: Adjustable noise reduction to clean up artifacts and improve clarity
+- **Aspect Ratio Preservation**: Keep your image proportions intact or adjust as needed
+- **Interactive Comparison**: Easily compare before and after results with a slider interface
+- **Download Support**: Save your enhanced images with a single click
+- **Responsive Interface**: Works seamlessly across desktop and mobile devices
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/6c3a409d-cd19-4c63-9129-280cf9c36a6d) and start prompting.
+## 🚀 Demo
 
-Changes made via Lovable will be committed automatically to this repo.
+Visit the live demo at [https://ai-upscaler.yourdomain.com](https://ai-upscaler.yourdomain.com)
 
-**Use your preferred IDE**
+## 🛠️ Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **React**: UI framework
+- **TypeScript**: Type-safe code
+- **Tailwind CSS**: Styling
+- **Shadcn/UI**: UI component library
+- **Vite**: Frontend tooling
+- **Picsart API**: Image enhancement
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🏗️ Project Structure
 
-Follow these steps:
+```
+src/
+├── components/        # React components
+│   ├── ui/            # Shadcn UI components
+│   └── upload/        # File upload related components
+├── services/          # API services
+├── types/             # TypeScript types
+└── pages/             # App pages
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 📋 Prerequisites
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- npm or yarn or pnpm
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 🔧 Installation
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/ai-image-upscaler.git
+cd ai-image-upscaler
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the development server:
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+4. Open http://localhost:5173 to view it in the browser.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## ⚙️ Configuration
 
-**Use GitHub Codespaces**
+To use your own Picsart API key:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. Create an account at [Picsart Developer Portal](https://picsart.io/api)
+2. Obtain an API key
+3. Update the `API_KEY` value in `src/services/api.ts`
 
-## What technologies are used for this project?
+## 🧪 Testing
 
-This project is built with:
+Run the test suite:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```bash
+npm test
+```
 
-## How can I deploy this project?
+## 🚢 Deployment
 
-Simply open [Lovable](https://lovable.dev/projects/6c3a409d-cd19-4c63-9129-280cf9c36a6d) and click on Share -> Publish.
+Build the application for production:
 
-## Can I connect a custom domain to my Lovable project?
+```bash
+npm run build
+```
 
-Yes, you can!
+The build artifacts will be stored in the `dist/` directory.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🤝 Contributing
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgements
+
+- [Picsart](https://picsart.io/) for their powerful image enhancement API
+- [Shadcn/UI](https://ui.shadcn.com/) for beautiful, accessible UI components
+- [Tailwind CSS](https://tailwindcss.com/) for utility-first CSS framework
+
+## 📞 Contact
+
+If you have any questions, feel free to reach out!
+
+- GitHub: [@yourusername](https://github.com/yourusername)
+- Twitter: [@yourhandle](https://twitter.com/yourhandle)
