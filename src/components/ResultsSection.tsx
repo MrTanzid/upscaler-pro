@@ -4,12 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Download, RefreshCw, ZoomIn, Share2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
+import { UpscaleSettings } from '@/types';
 
 interface ResultsSectionProps {
   originalImage: File;
   resultUrl: string;
   jobId: string;
   onReset: () => void;
+  settings: UpscaleSettings; // Add settings property to the interface
 }
 
 const ResultsSection: React.FC<ResultsSectionProps> = ({
@@ -17,6 +19,7 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({
   resultUrl,
   jobId,
   onReset,
+  settings, // Add settings parameter to the component
 }) => {
   const [originalPreview, setOriginalPreview] = useState<string>('');
   const [sliderPosition, setSliderPosition] = useState<number>(50);

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -65,13 +66,14 @@ const Index = () => {
   // Determine which section to render based on state and activeSection
   const renderContent = () => {
     // If we have processed results, show them
-    if (processedResult) {
+    if (processedResult && processingSettings) {
       return (
         <ResultsSection
           originalImage={processedResult.originalFile}
           resultUrl={processedResult.resultUrl}
           jobId={processedResult.jobId}
           onReset={handleReset}
+          settings={processingSettings}
         />
       );
     }
