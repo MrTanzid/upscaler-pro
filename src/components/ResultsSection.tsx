@@ -91,6 +91,26 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({
     }
   };
   
+  // Calculate processing time based on scale and denoise settings (simulated)
+  const calculateProcessingTime = (): string => {
+    const baseTime = 1.5; // Base time in seconds
+    const scaleMultiplier = settings.scale / 2; // Higher scale = longer processing
+    const denoiseImpact = settings.denoise / 100; // Higher denoise = longer processing
+    
+    const processingTime = baseTime * scaleMultiplier * (1 + denoiseImpact);
+    return `${processingTime.toFixed(1)} seconds`;
+  };
+  
+  // Calculate quality score based on settings (simulated)
+  const calculateQualityScore = (): string => {
+    const baseScore = 8.0;
+    const scaleImpact = 0.5 - (settings.scale > 4 ? 0.2 : 0); // Higher scale might reduce quality
+    const denoiseImpact = (settings.denoise > 50 ? 0.3 : 0.1); // Optimal denoise improves quality
+    
+    const qualityScore = Math.min(10, baseScore + scaleImpact + denoiseImpact);
+    return `${qualityScore.toFixed(1)}/10`;
+  };
+  
   return (
     <div className="max-w-5xl mx-auto px-4">
       <div className="text-center mb-8 animate-fade-in">
@@ -179,8 +199,8 @@ const ResultsSection: React.FC<ResultsSectionProps> = ({
         {[
           { label: 'Resolution Increase', value: `${settings.scale}×` },
           { label: 'Noise Reduction', value: `${settings.denoise}%` },
-          { label: 'Processing Time', value: '3 seconds' },
-          { label: 'Quality Score', value: '9.5/10' },
+          { label: 'Processing Time', value: calculateProcessingTime() },
+          { label: 'Quality Score', value: calculateQualityScore() },
         ].map((stat, i) => (
           <div key={i} className="bg-white rounded-lg p-4 text-center shadow-md">
             <p className="text-gray-500 text-sm">{stat.label}</p>

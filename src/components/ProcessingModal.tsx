@@ -4,7 +4,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import { Loader } from 'lucide-react';
 import { toast } from 'sonner';
-import { uploadAndUpscale, checkJobStatus } from '../services/api';
+import { uploadAndUpscale, checkJobStatus, simulateUpscaling } from '../services/api';
 import { UpscaleSettings, JobStatus } from '../types';
 
 interface ProcessingModalProps {
@@ -31,6 +31,9 @@ const ProcessingModal: React.FC<ProcessingModalProps> = ({
     
     const processFile = async () => {
       try {
+        // Convert file to data URL for frontend processing
+        const originalImageUrl = await readFileAsDataURL(file);
+        
         // Step 1: Upload file and start processing
         setStatus('Uploading...');
         setProgress(20);
@@ -64,9 +67,15 @@ const ProcessingModal: React.FC<ProcessingModalProps> = ({
             // Wait a moment for the progress to show 100%
             await new Promise(resolve => setTimeout(resolve, 500));
             
-            if (jobStatus.result_url) {
-              onSuccess(uploadResponse.job_id, jobStatus.result_url);
-            }
+            // Process the image in the browser using our simulateUpscaling function
+            const enhancedImageUrl = await simulateUpscaling(
+              originalImageUrl,
+              settings.scale,
+              settings.denoise
+            );
+            
+            // Now pass the enhanced image URL back
+            onSuccess(uploadResponse.job_id, enhancedImageUrl);
           } else if (jobStatus.status === 'failed') {
             throw new Error(jobStatus.message || 'Processing failed');
           }
@@ -84,6 +93,16 @@ const ProcessingModal: React.FC<ProcessingModalProps> = ({
     
     processFile();
   }, [isOpen, file, settings, onClose, onSuccess]);
+  
+  // Helper function to read file as data URL
+  const readFileAsDataURL = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
   
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
